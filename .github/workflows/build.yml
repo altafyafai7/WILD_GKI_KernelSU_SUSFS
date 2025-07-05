@@ -74,7 +74,6 @@ jobs:
           fi
           echo "MESSAGE_ID=$MESSAGE_ID" >> $GITHUB_ENV
 
-    steps:
       - name: Maximize Build Space
         uses: AdityaGarg8/remove-unwanted-software@v5
         with:
