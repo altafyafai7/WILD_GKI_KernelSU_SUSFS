@@ -30,7 +30,8 @@ on:
       revision:
         required: false
         type: string
-  secrets:
+        
+    secrets:
       # Secrets must be passed from the calling workflow.
       TELEGRAM_BOT_TOKEN:
         required: true
