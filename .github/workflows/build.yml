@@ -30,6 +30,14 @@ on:
       revision:
         required: false
         type: string
+  secrets:
+      # Secrets must be passed from the calling workflow.
+      TELEGRAM_BOT_TOKEN:
+        required: true
+      TELEGRAM_CHAT_ID:
+        required: true
+      BOOT_SIGN_KEY:
+        required: false
 
 jobs:
   build-gki:
@@ -39,6 +47,32 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
       CCACHE_HARDLINK: "true"
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - name: Send Telegram Notification
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -F message_thread_id="${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}" \
+            -F text="
+            🚀 Build started for Kernel! 
+            📦 *Repository:* [${{ github.repository }}](https://github.com/${{ github.repository }})
+            🗂️ *Branch:* ${{ github.ref_name }}
+            ✏️ *Commit:* [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            [🔗 View GitHub Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+            -F parse_mode="Markdown"
+            
+      - name: Send Initial Telegram Message
+        id: send_initial_message
+        run: |
+          MESSAGE_TEXT="🚀 **GKI Kernel Build Initialized** 🚀%0A%0A*Status: Build process started...*%0A%0A*Progress:*%0A\`[□□□□□□□□□□]\` 0%%"
+          RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage" -d "chat_id=${{ env.TELEGRAM_CHAT_ID }}" -d "text=${MESSAGE_TEXT}" -d "parse_mode=Markdown")
+          MESSAGE_ID=$(echo $RESPONSE | jq -r '.result.message_id')
+          if [ -z "$MESSAGE_ID" ] || [ "$MESSAGE_ID" == "null" ]; then
+            echo "Error: Could not retrieve Telegram message ID." && exit 1
+          fi
+          echo "MESSAGE_ID=$MESSAGE_ID" >> $GITHUB_ENV
 
     steps:
       - name: Maximize Build Space
