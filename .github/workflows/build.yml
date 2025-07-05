@@ -30,16 +30,7 @@ on:
       revision:
         required: false
         type: string
-        
-    secrets:
-      # Secrets must be passed from the calling workflow.
-      TELEGRAM_BOT_TOKEN:
-        required: true
-      TELEGRAM_CHAT_ID:
-        required: true
-      BOOT_SIGN_KEY:
-        required: false
-
+      
 jobs:
   build-gki:
     runs-on: ubuntu-latest
