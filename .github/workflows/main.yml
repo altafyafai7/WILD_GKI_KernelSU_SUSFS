@@ -170,8 +170,8 @@ jobs:
               echo "$branch_name Commit: $COMMIT_HASH"
               echo "$branch_name Commit URL: $COMMIT_URL"
               
-              echo "COMMIT_HASH_${var_name}=$COMMIT_HASH" >> "$GITHUB_ENV"
-              echo "COMMIT_URL_${var_name}=$COMMIT_URL" >> "$GITHUB_ENV"
+            echo "COMMIT_HASH_${var_name}=$COMMIT_HASH" >> "$GITHUB_ENV"
+            echo "COMMIT_URL_${var_name}=$COMMIT_URL" >> "$GITHUB_ENV"
             fi
           done
 
