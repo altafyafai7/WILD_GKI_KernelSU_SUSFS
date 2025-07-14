@@ -154,11 +154,11 @@ jobs:
           
           declare -A BRANCH_MAP=(
             ["gki_android12_5_10"]="gki-android12-5.10"
-     #       ["gki_android13_5_10"]="gki-android13-5.10"
-     #       ["gki_android13_5_15"]="gki-android13-5.15"
-     #       ["gki_android14_5_15"]="gki-android14-5.15"
-     #       ["gki_android14_6_1"]="gki-android14-6.1"
-     #       ["gki_android15_6_6"]="gki-android15-6.6"
+            ["gki_android13_5_10"]="gki-android13-5.10"
+            ["gki_android13_5_15"]="gki-android13-5.15"
+            ["gki_android14_5_15"]="gki-android14-5.15"
+            ["gki_android14_6_1"]="gki-android14-6.1"
+            ["gki_android15_6_6"]="gki-android15-6.6"
           )
           
           for var_name in "${!BRANCH_MAP[@]}"; do
@@ -170,8 +170,8 @@ jobs:
               echo "$branch_name Commit: $COMMIT_HASH"
               echo "$branch_name Commit URL: $COMMIT_URL"
               
-            echo "COMMIT_HASH_${var_name}=$COMMIT_HASH" >> "$GITHUB_ENV"
-            echo "COMMIT_URL_${var_name}=$COMMIT_URL" >> "$GITHUB_ENV"
+              echo "COMMIT_HASH_${var_name}=$COMMIT_HASH" >> "$GITHUB_ENV"
+              echo "COMMIT_URL_${var_name}=$COMMIT_URL" >> "$GITHUB_ENV"
             fi
           done
 
